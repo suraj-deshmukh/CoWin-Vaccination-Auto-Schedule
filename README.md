@@ -51,4 +51,4 @@ Note:
 
 *This Script will book appointment for next day by default. If you wish to change this behaviour you can edit DATE variable in config.py*
 
-*Script is tested for both 18-44 and 45+ group for first dose only. It is very basic script. Use it on your own risk. Various vaccine availability notification scripts are vailable,  this project is easy to integrate with such notification scripts.*   
+*Script is tested for both 18-44 and 45+ group for first dose only. It is very basic script. Use it on your own risk. Various vaccine availability notification scripts are available, this project is easy to integrate with such notification scripts.*   
