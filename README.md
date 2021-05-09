@@ -3,6 +3,10 @@
 
 ### Please add/change REGISTERED_MOBILE_NUMBER, Beneficiaries_Ids and PINCODES as per your choice before following below steps.
 
+Requirements:
+Python 3 and requests library
+
+
 Steps:
 
 1. execute book.py script using ```python book.py``` command
