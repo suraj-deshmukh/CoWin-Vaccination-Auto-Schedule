@@ -17,8 +17,10 @@ def book_slot(book):
     if resp.status_code == 200:
         print("Scheduled Successfully.")
         print(f"response: {resp.json()}")
+        return True
     else:
         print(f"booking error. {resp.status_code}\n{resp.text}")
+        return False
 
 def get_captcha():
     out = session.post("https://cdn-api.co-vin.in/api/v2/auth/getRecaptcha")
@@ -33,9 +35,7 @@ def book_appointment(age=18, dose=1):
     for i in PINCODES:
         out = session.get(f"https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode={i}&date={DATE}")
         if out.status_code == 200:
-            stop =  False
             for j in out.json()['centers']:
-                if stop: break
                 for sessions in j['sessions']:
                     print(f"\ncenter name: {j['name']} capacity: {sessions['available_capacity']} slots: {sessions['slots']}")
                     if sessions['available_capacity'] > 0 and sessions['min_age_limit'] == age:
@@ -46,8 +46,10 @@ def book_appointment(age=18, dose=1):
                             "slot": sessions['slots'][0],
                             "dose": dose
                         }
-                        book_slot(book)
-                        stop = True
+                        stop = book_slot(book)
+                        if stop:
+                            print("booking successfull")
+                            return True
         else:
             print(f"status code: {out.status_code}")
             print(f"response: {out.text}")
@@ -56,8 +58,8 @@ def book_appointment(age=18, dose=1):
 if __name__ == '__main__':
     out = get_authenticated_session()
     if out != False:
-        get_beneficiaries()
-        book_appointment() #fdefault to 18
+        # get_beneficiaries()
+        book_appointment(age=45) #fdefault to 18
         # book_appointment(age=45) # for 45+age group
     else:
         print("Failed to login")
