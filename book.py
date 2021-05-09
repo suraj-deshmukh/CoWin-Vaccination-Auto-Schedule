@@ -59,7 +59,7 @@ if __name__ == '__main__':
     out = get_authenticated_session()
     if out != False:
         # get_beneficiaries()
-        book_appointment(age=45) #fdefault to 18
+        book_appointment(age=18) #fdefault to 18
         # book_appointment(age=45) # for 45+age group
     else:
         print("Failed to login")
