@@ -4,7 +4,7 @@
 ### Please add/change REGISTERED_MOBILE_NUMBER, Beneficiaries_Ids, DOSE, VACCINE and PINCODES as per your choice before following below steps.
 
 Requirements:
-Python 3 and requests library
+Python 3.5+ and [requests](https://pypi.org/project/requests/) library
 
 Steps:
 
