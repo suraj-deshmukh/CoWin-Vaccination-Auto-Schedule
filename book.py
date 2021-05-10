@@ -9,6 +9,8 @@ def get_beneficiaries():
         print(f"Beneficiaries Status_code: {beneficiaries.status_code}\n{beneficiaries.text}")
 
 def book_slot(book):
+    out = get_authenticated_session()
+    if out == False: raise Exception("Failed to login")
     print(f"Trying to book: {book}")
     get_captcha()
     book["captcha"] = input("Enter Captcha:")
@@ -29,37 +31,58 @@ def get_captcha():
         with open("svg.html", "w") as f: 
             f.write(captcha)
         print("captcha downloaded successfully")
-      
-
-def book_appointment(age=18, dose=1):
-    for i in PINCODES:
-        out = session.get(f"https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode={i}&date={DATE}")
+                
+def book_appointment(center_details, age=18):
+    sessions = center_details['sessions']
+    print(f"\ncenter name: {center_details['name']}, capacity: {sessions['available_capacity']}, slots: {sessions['slots']}")
+    if DOSE == 2 and VACCINE != sessions['vaccine']:
+        print(f"looking for {VACCINE} but availability is for {sessions['vaccine']}")
+        return False
+    book = {
+        "center_id": center_details['center_id'],
+        "session_id": sessions['session_id'],
+        "beneficiaries": Beneficiaries_Ids[f"{age}"],
+        "slot": sessions['slots'][0],
+        "dose": DOSE
+    }
+    print(f"book: {book}")
+    stop = book_slot(book)
+    # stop = True
+    if stop:
+        print("booking successfull")
+        return True
+    else:
+        print("booking failed")
+            
+def find_centers(age=18):
+    for pincode in PINCODES:
+        print(f"Checking for pincode: {pincode}\n")
+        out = session.get(f"https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode={pincode}&date={DATE}")
         if out.status_code == 200:
-            for j in out.json()['centers']:
-                for sessions in j['sessions']:
-                    print(f"\ncenter name: {j['name']} capacity: {sessions['available_capacity']} slots: {sessions['slots']}")
-                    if sessions['available_capacity'] > 0 and sessions['min_age_limit'] == age:
-                        book = {
-                            "center_id": j['center_id'],
-                            "session_id": sessions['session_id'],
-                            "beneficiaries": Beneficiaries_Ids[f"{age}"],
-                            "slot": sessions['slots'][0],
-                            "dose": dose
+            for center in out.json()['centers']:
+                for sessions in center['sessions']:
+                    if sessions['available_capacity'] > len(Beneficiaries_Ids[f"{age}"]) and sessions['min_age_limit'] == age:
+                        center_details = {
+                            'name': center['name'],
+                            'center_id': center['center_id'],
+                            'sessions': sessions
                         }
-                        stop = book_slot(book)
-                        if stop:
-                            print("booking successfull")
+                        print(f"\nbooking available for below center:\n{center_details} and vaccine: {sessions['vaccine']}")
+                        status = book_appointment(center_details, age)
+                        if status:
                             return True
         else:
-            print(f"status code: {out.status_code}")
+            print(f"Unable to find centers.\nstatus code: {out.status_code}")
             print(f"response: {out.text}")
-    
+        time.sleep(RATE)
+        
+
         
 if __name__ == '__main__':
-    out = get_authenticated_session()
-    if out != False:
-        # get_beneficiaries()
-        book_appointment(age=45) #fdefault to 18
-        # book_appointment(age=45) # for 45+age group
-    else:
-        print("Failed to login")
+    while True:
+        try:
+            out = find_centers(age=18)
+            if out:
+                break
+        except Exception as e:
+            print(f"error: {e}")
