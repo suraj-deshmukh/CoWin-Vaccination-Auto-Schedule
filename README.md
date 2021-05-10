@@ -1,5 +1,5 @@
 # CoWin-Vaccination-Auto-Schedule
-## A Python 3 Script to Conitnuosly Monitor Vaccine Availability and Schedule CoWin Vaccination Appointment. This supports Capcha.  
+## A Python 3 Script to Continuously Monitor Vaccine Availability and Schedule CoWin Vaccination Appointment. This supports Capcha.  
 
 ### Please add/change REGISTERED_MOBILE_NUMBER, Beneficiaries_Ids, DOSE, VACCINE and PINCODES as per your choice before following below steps.
 
