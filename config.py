@@ -3,9 +3,10 @@ DATE = (datetime.today() + timedelta(1)).strftime("%d-%m-%Y")
 LIMIT = 3 #otp retry limit
 
 PINCODES = [411001,411006] #list of pincodes by your preference.  
-
+RATE = 3.5 #single api call per {RATE} second
 REGISTERED_MOBILE_NUMBER = 1234567890 # 10 digit mobile number in int 
-
+DOSE = 1 #keep this value to 1 if you want to book fist dose adn to 2 for second do
+VACCINE = 'COVAXIN' #'COVISHIELD' or 'COVAXIN' in case of dose 2. for dose 1, it does not matter what is the vaccine type given here script will book whiever is available
 Beneficiaries_Ids = { 
     '18':["",""],
     '45':[""]
