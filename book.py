@@ -60,8 +60,11 @@ def find_centers(age=18):
         out = session.get(f"https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode={pincode}&date={DATE}")
         if out.status_code == 200:
             for center in out.json()['centers']:
+                if center['fee_type'] != VACCINE_FEE: continue
                 for sessions in center['sessions']:
-                    if sessions['available_capacity'] > len(Beneficiaries_Ids[f"{age}"]) and sessions['min_age_limit'] == age:
+                    capacity = sessions.get(f'available_capacity_dose{DOSE}', None)
+                    if capacity == None: continue
+                    if capacity > len(Beneficiaries_Ids[f"{age}"]) and sessions['min_age_limit'] == age:
                         center_details = {
                             'name': center['name'],
                             'center_id': center['center_id'],
