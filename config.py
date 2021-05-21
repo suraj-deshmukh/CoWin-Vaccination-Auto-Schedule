@@ -7,6 +7,7 @@ RATE = 3.5 #single api call per {RATE} second
 REGISTERED_MOBILE_NUMBER = 1234567890 # 10 digit mobile number in int 
 DOSE = 1 #keep this value to 1 if you want to book fist dose adn to 2 for second do
 VACCINE = 'COVAXIN' #'COVISHIELD' or 'COVAXIN' in case of dose 2. for dose 1, it does not matter what is the vaccine type given here script will book whiever is available
+VACCINE_FEE = "Free" # for free/ "Paid" for paid one
 Beneficiaries_Ids = { 
     '18':["",""],
     '45':[""]
