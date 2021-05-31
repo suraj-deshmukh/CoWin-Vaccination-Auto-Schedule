@@ -64,7 +64,7 @@ def find_centers(age=18):
                 for sessions in center['sessions']:
                     capacity = sessions.get(f'available_capacity_dose{DOSE}', None)
                     if capacity == None: continue
-                    if capacity > len(Beneficiaries_Ids[f"{age}"]) and sessions['min_age_limit'] == age:
+                    if capacity >= len(Beneficiaries_Ids[f"{age}"]) and sessions['min_age_limit'] == age:
                         center_details = {
                             'name': center['name'],
                             'center_id': center['center_id'],
