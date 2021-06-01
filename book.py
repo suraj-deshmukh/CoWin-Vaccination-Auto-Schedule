@@ -1,4 +1,5 @@
 from login import *
+import os
 
 def get_beneficiaries():
     beneficiaries = session.get('https://cdn-api.co-vin.in/api/v2/appointment/beneficiaries')
@@ -30,6 +31,7 @@ def get_captcha():
         captcha = out.json()['captcha']                                                                                                                                                                     
         with open("svg.html", "w") as f: 
             f.write(captcha)
+        os.system("start svg.html")
         print("captcha downloaded successfully")
                 
 def book_appointment(center_details, age=18):
